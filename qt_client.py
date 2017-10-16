@@ -310,9 +310,6 @@ class Client(Ui_MainWindow):
             pass
         else:
             scrollbar = self.MessageView.verticalScrollBar()
-
-            print(scrollbar.minimum(), scrollbar.maximum())
-
             scrollbar.setValue(scrollbar.maximum())
         #self.MessageScroller.verticalScrollBar().setValue(self.MessageScroller.verticalScrollBar().maximum())
 
