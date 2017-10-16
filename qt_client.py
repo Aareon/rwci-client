@@ -202,6 +202,7 @@ class Client(Ui_MainWindow):
         self.port = self.settings.get("server_port")
         
         self.mentioned_in = []
+        self.new_messages = []
 
         renderer = Renderer()
         lexer = InlineLexer(renderer)
@@ -296,11 +297,12 @@ class Client(Ui_MainWindow):
             if channel_name == self.active_channel:
                 channel_str += f"<br />> # {paint(channel_name, 'green')}"
             else:
-                if channel_name not in self.mentioned_in:
-                    channel_str += f"<br /># {channel_name}"
-                else:
-                    self.mentioned_in.remove(channel_name)
+                if channel_name in self.mentioned_in:
                     channel_str += f"<br /># {paint(channel_name, 'deep_orange')} !"
+                elif channel_name in self.new_messages:
+                    channel_str += f"<br /># {channel_name} *"
+                else:
+                    channel_str += f"<br /># {channel_name}"
 
         self.ChannelView.setHtml(channel_str)
 
@@ -323,7 +325,6 @@ class Client(Ui_MainWindow):
             scrollbar = self.MessageView.verticalScrollBar()
 
             scrollbar.setValue(scrollbar.maximum())
-
     def print_player_message(self, message, author, channel):
         low_author = author.lower()
         if low_author not in self.settings.get("blocked_users", []):
@@ -339,7 +340,10 @@ class Client(Ui_MainWindow):
                 # Update channel to reflect mention
                 if channel != self.active_channel:
                     self.mentioned_in.append(channel)
-                    print("I wasn't in the channel, here you go")
+                    self.update_channels()
+            else:
+                if channel != self.active_channel:
+                    self.new_messages.append(channel)
                     self.update_channels()
             self.add_text(f"[{paint(timestamp, 'red')}] {paint(author, color)}: {paint(text, text_color)}", channel)
 
@@ -754,8 +758,18 @@ class Client(Ui_MainWindow):
     async def command_join(self, channel_name, *args):
         channel = self.find_channel(channel_name)
 
-        if channel and channel in self.channel_list:
+        if channel in self.channel_list:
             self.active_channel = channel
+
+            if channel in self.mentioned_in or channel in self.new_messages:
+                for e in self.mentioned_in:
+                    if channel == e:
+                        self.mentioned_in.remove(e)
+
+                for e in self.new_messages:
+                    if channel == e:
+                        self.new_messages.remove(e)
+            
             self.print_local_message(f"Joined #{channel}", plain=True, success=True)
 
             self.update_channels()
