@@ -322,7 +322,7 @@ class Client(Ui_MainWindow):
             timestamp = datetime.now().strftime(time.time_format)
 
             text_color = "white"
-            if f"@{self.username}" in message:
+            if f"@{self.username.lower()}" in message:
                 text_color = "deep_orange"
             self.add_text(f"[{paint(timestamp, 'red')}] {paint(author, color)}: {paint(text, text_color)}", channel)
 
