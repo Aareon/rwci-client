@@ -200,6 +200,8 @@ class Client(Ui_MainWindow):
 
         self.ip = self.settings.get("server_ip")
         self.port = self.settings.get("server_port")
+        
+        self.mentioned_in = []
 
         renderer = Renderer()
         lexer = InlineLexer(renderer)
@@ -290,7 +292,15 @@ class Client(Ui_MainWindow):
     def update_channels(self):
         channel_str = "[==] Channels [==]<br /><br />"
 
-        channel_str += "<br />".join(f"# &gt; {paint(channel_name, 'green')} &lt;" if channel_name == self.active_channel else f"# {channel_name}" for channel_name in list(self.channel_list.keys()))
+        for channel_name in list(self.channel_list.keys()):
+            if channel_name == self.active_channel:
+                channel_str += f"<br />> # {paint(channel_name, 'green')}"
+            else:
+                if channel_name not in self.mentioned_in:
+                    channel_str += f"<br /># {channel_name}"
+                else:
+                    self.mentioned_in.remove(channel_name)
+                    channel_str += f"<br /># {paint(channel_name, 'deep_orange')} !"
 
         self.ChannelView.setHtml(channel_str)
 
@@ -321,9 +331,16 @@ class Client(Ui_MainWindow):
             text = self.parse_formatting(message)
             timestamp = datetime.now().strftime(time.time_format)
 
+            # Mention highlighting
             text_color = "white"
             if f"@{self.username.lower()}" in message:
-                text_color = "deep_orange"
+                text_color = "orange"
+
+                # Update channel to reflect mention
+                if channel != self.active_channel:
+                    self.mentioned_in.append(channel)
+                    print("I wasn't in the channel, here you go")
+                    self.update_channels()
             self.add_text(f"[{paint(timestamp, 'red')}] {paint(author, color)}: {paint(text, text_color)}", channel)
 
     def print_server_broadcast(self, message):
