@@ -574,9 +574,13 @@ class RWCIClient(Ui_MainWindow):
         self.history_handler.history_index = 0
 
     async def connect(self):
+        protocol = "ws://"
+        if self.settings.get("secure_connect"):
+            protocol = "wss://"
         self.print_local_message("Attempting connection..", plain=True)
         try:
-            self.ws = await websockets.client.connect(f"wss://{self.ip}:{self.port}")
+            print("Connecting via {} protocol".format("secure" if protocol == "wss://" else "unsecure"))
+            self.ws = await websockets.client.connect(f"{protocol}{self.ip}:{self.port}")
 
         except socket.gaierror:
             self.print_local_message(f"Unable to resolve {self.ip}:{self.port}", error=True)
@@ -897,7 +901,16 @@ async def command_r(*, message):
 
 class LoginHandler(Ui_LoginWindow):
     def __init__(self, window):
-        self.settings = config.Config("settings.json", default={"blocked_users": [], "server_ip": "", "server_port": "", "should_render_markdown": True})
+        self.settings = config.Config(
+            "settings.json",
+            default={
+                "blocked_users": [],
+                "server_ip": "",
+                "server_port": "",
+                "should_render_markdown": True,
+                "secure_connect": False
+            }
+        )
         self.window = window
 
         Ui_LoginWindow.__init__(self)
@@ -907,6 +920,7 @@ class LoginHandler(Ui_LoginWindow):
         server_ip = self.settings.get("server_ip")
         server_port = self.settings.get("server_port")
         do_markdown = self.settings.get("should_render_markdown")
+        do_secure = self.settings.get("secure_connect")
 
         if server_ip:
             self.AddressField.setText(server_ip)
@@ -919,6 +933,12 @@ class LoginHandler(Ui_LoginWindow):
         else:
             do_markdown = True
             self.MarkdownCheck.setChecked(True)
+
+        if isinstance(do_secure, bool):
+            self.SecureCheck.setChecked(do_secure)
+        else:
+            do_secure = True
+            self.SecureCheck.setChecked(True)
 
         self.LoginButton.clicked.connect(self.validate_input)
 
@@ -955,6 +975,7 @@ class LoginHandler(Ui_LoginWindow):
         self.settings._db["server_ip"] = server_ip
         self.settings._db["server_port"] = server_port
         self.settings._db["should_render_markdown"] = self.MarkdownCheck.isChecked()
+        self.settings._db["secure_connect"] = self.SecureCheck.isChecked()
         self.settings._dump()
 
         self.window.close()
