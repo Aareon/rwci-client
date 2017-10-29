@@ -8,7 +8,17 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_LoginWindow(object):
+    # "Login Info" font
+    header_font = QtGui.QFont()
+    header_font.setFamily("Consolas")
+    header_font.setPointSize(16)
+
+    # Body font
+    body_font = header_font
+    body_font.setPointSize(10)
+    
     def setupUi(self, LoginWindow):
         LoginWindow.setObjectName("LoginWindow")
         LoginWindow.resize(800, 600)
@@ -33,10 +43,8 @@ class Ui_LoginWindow(object):
         self.PanelSplitter.setOrientation(QtCore.Qt.Vertical)
         self.PanelSplitter.setObjectName("PanelSplitter")
         self.UserInfoHeader = QtWidgets.QLabel(self.PanelSplitter)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(16)
-        self.UserInfoHeader.setFont(font)
+
+        self.UserInfoHeader.setFont(self.header_font)
         self.UserInfoHeader.setStyleSheet("color: #EDEDED;\n"
 "            background-color: #212121;")
         self.UserInfoHeader.setTextFormat(QtCore.Qt.PlainText)
@@ -44,50 +52,56 @@ class Ui_LoginWindow(object):
         self.UserInfoHeader.setObjectName("UserInfoHeader")
         self.FormWidget = QtWidgets.QWidget(self.PanelSplitter)
         self.FormWidget.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.FormWidget.setStyleSheet("color: #EDEDED;\n"
-"            background-color: #212121;\n"
-"          ")
+        self.FormWidget.setStyleSheet(
+                """color: #EDEDED;\n
+                background-color: #212121;\n"""
+        )
+
         self.FormWidget.setObjectName("FormWidget")
         self.formLayout_2 = QtWidgets.QFormLayout(self.FormWidget)
         self.formLayout_2.setContentsMargins(0, 0, 0, 0)
         self.formLayout_2.setObjectName("formLayout_2")
         spacerItem = QtWidgets.QSpacerItem(20, 80, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.formLayout_2.setItem(1, QtWidgets.QFormLayout.FieldRole, spacerItem)
+
+        # Username text
         self.UsernameText = QtWidgets.QLabel(self.FormWidget)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(10)
-        self.UsernameText.setFont(font)
-        self.UsernameText.setStyleSheet("color: #EDEDED;\n"
-"              background-color: #212121;")
+
+        self.UsernameText.setFont(self.body_font)
+        # self.UsernameText.setStyleSheet(
+        #         """color: #EDEDED;\n
+        #            background-color: #212121;"""
+        # )
         self.UsernameText.setTextFormat(QtCore.Qt.PlainText)
         self.UsernameText.setObjectName("UsernameText")
         self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.UsernameText)
+
+        # Username field
         self.UsernameField = QtWidgets.QLineEdit(self.FormWidget)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(10)
-        self.UsernameField.setFont(font)
-        self.UsernameField.setStyleSheet("color: #EDEDED;\n"
-"              background-color: #212121;")
+
+        self.UsernameField.setFont(self.body_font)
+        # self.UsernameField.setStyleSheet(
+        #         """color: #EDEDED;\n
+        #            background-color: #212121;"""
+        # )
         self.UsernameField.setFrame(False)
         self.UsernameField.setObjectName("UsernameField")
         self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.UsernameField)
+
+        # Password text
         self.PasswordText = QtWidgets.QLabel(self.FormWidget)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(10)
-        self.PasswordText.setFont(font)
+
+        self.PasswordText.setFont(self.body_font)
         self.PasswordText.setStyleSheet("color: #EDEDED;\n"
 "                background-color: #212121;")
         self.PasswordText.setTextFormat(QtCore.Qt.PlainText)
         self.PasswordText.setObjectName("PasswordText")
         self.formLayout_2.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.PasswordText)
+
+        # Password field
         self.PasswordField = QtWidgets.QLineEdit(self.FormWidget)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(10)
-        self.PasswordField.setFont(font)
+
+        self.PasswordField.setFont(self.body_font)
         self.PasswordField.setStyleSheet("color: #EDEDED;\n"
 "              background-color: #212121;")
         self.PasswordField.setInputMask("")
@@ -95,12 +109,12 @@ class Ui_LoginWindow(object):
         self.PasswordField.setEchoMode(QtWidgets.QLineEdit.Password)
         self.PasswordField.setObjectName("PasswordField")
         self.formLayout_2.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.PasswordField)
+
+        # Login button
         self.LoginButton = QtWidgets.QPushButton(self.FormWidget)
         self.LoginButton.setEnabled(True)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(10)
-        self.LoginButton.setFont(font)
+
+        self.LoginButton.setFont(self.body_font)
         self.LoginButton.setStyleSheet("color: #EDEDED;\n"
 "              background-color: #434343;")
         self.LoginButton.setAutoDefault(True)
@@ -108,12 +122,12 @@ class Ui_LoginWindow(object):
         self.LoginButton.setFlat(False)
         self.LoginButton.setObjectName("LoginButton")
         self.formLayout_2.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.LoginButton)
+
+        # Error text
         self.ErrorText = QtWidgets.QLabel(self.FormWidget)
         self.ErrorText.setEnabled(True)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(10)
-        self.ErrorText.setFont(font)
+
+        self.ErrorText.setFont(self.body_font)
         self.ErrorText.setStyleSheet("background-color: #212121;\n"
 "              color: #F44336;")
         self.ErrorText.setText("")
@@ -124,65 +138,65 @@ class Ui_LoginWindow(object):
         self.formLayout_2.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.ErrorText)
         spacerItem1 = QtWidgets.QSpacerItem(20, 80, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.formLayout_2.setItem(6, QtWidgets.QFormLayout.FieldRole, spacerItem1)
+
+        # Address text
         self.AddressText = QtWidgets.QLabel(self.FormWidget)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(10)
-        self.AddressText.setFont(font)
+
+        self.AddressText.setFont(self.body_font)
         self.AddressText.setStyleSheet("color: #EDEDED;\n"
 "              background-color: #212121;")
         self.AddressText.setTextFormat(QtCore.Qt.PlainText)
         self.AddressText.setObjectName("AddressText")
         self.formLayout_2.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.AddressText)
+
+        # Address field
         self.AddressField = QtWidgets.QLineEdit(self.FormWidget)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(10)
-        self.AddressField.setFont(font)
+
+        self.AddressField.setFont(self.body_font)
         self.AddressField.setStyleSheet("color: #EDEDED;\n"
 "              background-color: #212121;")
         self.AddressField.setInputMask("")
         self.AddressField.setFrame(False)
         self.AddressField.setObjectName("AddressField")
         self.formLayout_2.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.AddressField)
+
+        # Port text
         self.PortText = QtWidgets.QLabel(self.FormWidget)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(10)
-        self.PortText.setFont(font)
+
+        self.PortText.setFont(self.body_font)
         self.PortText.setStyleSheet("color: #EDEDED;\n"
 "              background-color: #212121;")
         self.PortText.setTextFormat(QtCore.Qt.PlainText)
         self.PortText.setObjectName("PortText")
         self.formLayout_2.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.PortText)
+
+        # Port field
         self.PortField = QtWidgets.QLineEdit(self.FormWidget)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(10)
-        self.PortField.setFont(font)
+
+        self.PortField.setFont(self.body_font)
         self.PortField.setStyleSheet("color: #EDEDED;\n"
 "              background-color: #212121;")
         self.PortField.setInputMask("")
         self.PortField.setFrame(False)
         self.PortField.setObjectName("PortField")
         self.formLayout_2.setWidget(8, QtWidgets.QFormLayout.FieldRole, self.PortField)
+
+        # Enable Markdown Text
         self.MarkdownText = QtWidgets.QLabel(self.FormWidget)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(10)
-        self.MarkdownText.setFont(font)
-        self.MarkdownText.setStyleSheet("color: #EDEDED;\n"
-"              background-color: #212121;")
+
+        self.MarkdownText.setFont(self.body_font)
+        # self.MarkdownText.setStyleSheet("color: #EDEDED;\n"
+        # "background-color: #212121;")
         self.MarkdownText.setTextFormat(QtCore.Qt.PlainText)
         self.MarkdownText.setObjectName("MarkdownText")
         self.formLayout_2.setWidget(9, QtWidgets.QFormLayout.LabelRole, self.MarkdownText)
+
+        # Enable Markdown Check button
         self.MarkdownCheck = QtWidgets.QCheckBox(self.FormWidget)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(10)
-        self.MarkdownCheck.setFont(font)
-        self.MarkdownCheck.setStyleSheet("color: #EDEDED;\n"
-"              background-color: #212121;")
+
+        self.MarkdownCheck.setFont(self.body_font)
+        # self.MarkdownCheck.setStyleSheet("color: #EDEDED;\n"
+        # "background-color: #212121;")
         self.MarkdownCheck.setTristate(False)
         self.MarkdownCheck.setObjectName("MarkdownCheck")
         self.formLayout_2.setWidget(9, QtWidgets.QFormLayout.FieldRole, self.MarkdownCheck)
@@ -190,8 +204,28 @@ class Ui_LoginWindow(object):
         self.gridLayout.addWidget(self.MainPanel, 0, 0, 1, 1)
         LoginWindow.setCentralWidget(self.LoginWidget)
 
+        # Secure (wss://) text
+        self.SecureText = QtWidgets.QLabel(self.FormWidget)
+        self.SecureText.setFont(self.body_font)
+        self.SecureText.setTextFormat(QtCore.Qt.PlainText)
+        self.SecureText.setObjectName("SecureText")
+        self.formLayout_2.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.SecureText)
+
         self.retranslateUi(LoginWindow)
         QtCore.QMetaObject.connectSlotsByName(LoginWindow)
+
+        # Secure (wss://) Check button
+        self.SecureCheck = QtWidgets.QCheckBox(self.FormWidget)
+
+        self.SecureCheck.setFont(self.body_font)
+        # self.MarkdownCheck.setStyleSheet("color: #EDEDED;\n"
+        # "background-color: #212121;")
+        self.SecureCheck.setTristate(False)
+        self.SecureCheck.setObjectName("SecureCheck")
+        self.formLayout_2.setWidget(10, QtWidgets.QFormLayout.FieldRole, self.SecureCheck)
+        self.verticalLayout.addWidget(self.PanelSplitter)
+        self.gridLayout.addWidget(self.MainPanel, 0, 0, 1, 1)
+        LoginWindow.setCentralWidget(self.LoginWidget)
 
     def retranslateUi(self, LoginWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -208,4 +242,4 @@ class Ui_LoginWindow(object):
         self.PortText.setText(_translate("LoginWindow", "Port"))
         self.PortField.setPlaceholderText(_translate("LoginWindow", "> Port"))
         self.MarkdownText.setText(_translate("LoginWindow", "Enable Markdown"))
-
+        self.SecureText.setText(_translate("LoginWindow", "Secure Connect"))
