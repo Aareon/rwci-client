@@ -579,7 +579,7 @@ class RWCIClient(Ui_MainWindow):
             protocol = "wss://"
         self.print_local_message("Attempting connection..", plain=True)
         try:
-            print("Connecting via {} protocol".format("secure" if protocol == "wss://" else "unsecure"))
+            print(f"Connecting via {'secure' if protocol == 'wss://' else 'unsecure'} protocol")
             self.ws = await websockets.client.connect(f"{protocol}{self.ip}:{self.port}")
 
         except socket.gaierror:
